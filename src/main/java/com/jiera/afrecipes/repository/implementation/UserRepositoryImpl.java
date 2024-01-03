@@ -10,8 +10,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.jiera.afrecipes.domain.Role;
 import com.jiera.afrecipes.domain.User;
+import com.jiera.afrecipes.enumeration.RoleType;
 import com.jiera.afrecipes.exception.ApiException;
+import com.jiera.afrecipes.repository.RoleRepository;
 import com.jiera.afrecipes.repository.UserRepository;
 import com.jiera.afrecipes.query.UserQuery;
 
@@ -24,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserRepositoryImpl implements UserRepository<User> {
 
     private final NamedParameterJdbcTemplate jdbc;
+    private final RoleRepository<Role> roleRepository;
 
     @Override
     public User create(User user) {
@@ -36,16 +40,18 @@ public class UserRepositoryImpl implements UserRepository<User> {
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(UserQuery.INSERT_USER_QUERY, parameters, holder);
             user.setId(holder.getKey().longValue());
+            // add role to user
+            roleRepository.addRoleToUser(user.getId(), RoleType.ROLE_USER.name());
+            // send verification url
+            // save url in verification table
+            // send email to user with verification url
+            // return newly created user
+            // if any errors, throw exception with proper message
         } catch (EmptyResultDataAccessException exception) {
 
         } catch (Exception exception) {
         }
-        // add role to user
-        // send verification url
-        // save url in verification table
-        // send email to user with verification url
-        // return newly created user
-        // if any errors, throw exception with proper message
+
         return null;
     }
 
