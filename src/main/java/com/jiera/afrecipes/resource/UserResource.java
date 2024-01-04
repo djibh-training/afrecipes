@@ -2,6 +2,7 @@ package com.jiera.afrecipes.resource;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jiera.afrecipes.domain.HttpResponse;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
+@RestControllerAdvice
 @RequestMapping(path = "/user")
 @RequiredArgsConstructor
 public class UserResource {
@@ -33,7 +35,7 @@ public class UserResource {
         return ResponseEntity.created(getUri()).body(
                 HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
-                        .data(Map.of("user", userDTO)) // just for Postman testing
+                        .data(Map.of("user", userDTO)) // just for Httpie testing
                         .message("User created")
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())

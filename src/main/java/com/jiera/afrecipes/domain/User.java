@@ -18,23 +18,17 @@ import lombok.experimental.SuperBuilder;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class User {
     private Long id;
-
     @NotEmpty(message = "Vous devez renseigner un prénom")
     private String firstName;
-
     @NotEmpty(message = "Vous devez renseigner un nom")
     private String lastName;
-
     @NotEmpty(message = "Vous devez renseigner un nom d'utilisateur")
     private String username;
-
     @NotEmpty(message = "Vous devez renseigner une adresse email")
     @Email(message = "Adresse introuvable. Veuillez entrer une adresse valide")
     private String email;
-
     @NotEmpty(message = "Vous devez renseigner un mot de passe")
     private String password;
-
     private String address;
     private String postalCode;
     private String city;

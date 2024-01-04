@@ -97,6 +97,7 @@ public class UserRepositoryImpl implements UserRepository<User> {
         return new MapSqlParameterSource()
                 .addValue("firstName", user.getFirstName())
                 .addValue("lastName", user.getLastName())
+                .addValue("username", user.getUsername())
                 .addValue("email", user.getEmail())
                 .addValue("password", encoder.encode(user.getPassword()));
     }
