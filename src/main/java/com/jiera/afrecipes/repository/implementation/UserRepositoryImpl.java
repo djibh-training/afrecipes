@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -61,8 +60,6 @@ public class UserRepositoryImpl implements UserRepository<User> {
             user.setEnabled(false);
             user.setIsNotLocked(true);
             return user;
-        } catch (EmptyResultDataAccessException exception) {
-            throw new ApiException("Aucun rôle trouvé pour ce nom : " + RoleType.ROLE_USER.name());
         } catch (Exception exception) {
             throw new ApiException("An error occurred. Please try again.");
         }
@@ -106,7 +103,7 @@ public class UserRepositoryImpl implements UserRepository<User> {
 
     private String getVerificationUrl(String key, String type) {
         // backend url for now to allow testing with Postman
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify" + type + "/" + key)
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify/" + type + "/" + key)
                 .toUriString();
     }
 
