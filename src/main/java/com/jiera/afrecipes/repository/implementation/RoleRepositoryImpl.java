@@ -12,6 +12,7 @@ import com.jiera.afrecipes.enumeration.RoleType;
 import com.jiera.afrecipes.exception.ApiException;
 import com.jiera.afrecipes.repository.RoleRepository;
 import com.jiera.afrecipes.rowmapper.RoleRowMapper;
+import com.jiera.afrecipes.query.RoleQuery;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class RoleRepositoryImpl implements RoleRepository<Role> {
-    private static final String SELECT_ROLE_BY_NAME_QUERY = "";
-    private static final String INSERT_ROLE_TO_USER_QUERY = "";
+
     private final NamedParameterJdbcTemplate jdbc;
 
     @Override
@@ -58,9 +58,9 @@ public class RoleRepositoryImpl implements RoleRepository<Role> {
     public void addRoleToUser(Long userId, String roleName) {
         log.info("Adding role {} to user id: {}", roleName, userId);
         try {
-            Role role = jdbc.queryForObject(SELECT_ROLE_BY_NAME_QUERY, Map.of("roleName", roleName),
+            Role role = jdbc.queryForObject(RoleQuery.SELECT_ROLE_BY_NAME_QUERY, Map.of("roleName", roleName),
                     new RoleRowMapper());
-            jdbc.update(INSERT_ROLE_TO_USER_QUERY, Map.of("userId", userId, "roleId", role.getId()));
+            jdbc.update(RoleQuery.INSERT_ROLE_TO_USER_QUERY, Map.of("userId", userId, "roleId", role.getId()));
         } catch (EmptyResultDataAccessException exception) {
             throw new ApiException("Aucun rôle trouvé pour ce nom : " + RoleType.ROLE_USER.name());
         } catch (Exception exception) {
